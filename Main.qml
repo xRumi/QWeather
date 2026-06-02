@@ -56,6 +56,13 @@ Window {
         }
     }
 
+    // bouncing dots for loading animation
+    BouncingDots {
+        anchors.fill: parent
+        anchors.topMargin: 400
+        visible: weatherData.isWeatherDataReady === false
+    }
+
     // main body
     ColumnLayout {
         anchors.fill: parent

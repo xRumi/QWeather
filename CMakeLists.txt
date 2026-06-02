@@ -29,6 +29,7 @@ qt_add_qml_module(qWeather
         QML_FILES qml/WeatherGraph.qml
         RESOURCES assets/icons/cloud-lightning.svg assets/icons/moon.svg  assets/icons/sun.svg
         RESOURCES assets/icons/cloud-fog.svg assets/icons/cloud-lightning.svg assets/icons/cloud-moon.svg assets/icons/cloud-rain.svg assets/icons/cloud-sun.svg assets/icons/cloud.svg assets/icons/moon.svg assets/icons/sun-dim.svg assets/icons/sun.svg
+        QML_FILES qml/BouncingDots.qml
 )
 # Qt for iOS sets MACOSX_BUNDLE_GUI_IDENTIFIER automatically since Qt 6.1.
 # If you are developing for iOS or macOS you should consider setting an
