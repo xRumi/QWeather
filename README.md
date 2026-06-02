@@ -2,4 +2,4 @@
 Yet Another beautifully simple, modern weather application with fluid animations.
 
 # Demos
-![Night Clear Sky](./assets/demo/night-clearsky.webp)
+<img src="./assets/demo/night-clearsky.webp" height="512">
