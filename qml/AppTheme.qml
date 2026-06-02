@@ -10,6 +10,7 @@ Item {
     property var color: colors[weatherCodeDecode[weatherCode]?.color || 0]
     property var weatherIcon: weatherCodeDecode[weatherCode]?.icon
 
+    // for accessing weatherIcons from javascript as failed to do so directly
     property int tempWeatherCode: 0
     property var tempWeatherIcon: weatherCodeDecode[tempWeatherCode]?.icon
 

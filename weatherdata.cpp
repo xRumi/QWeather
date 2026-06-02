@@ -30,7 +30,7 @@ QJsonDocument parseJsonFromReply(QNetworkReply* reply, bool& success) {
     return resultJson;
 }
 
-WeatherData::WeatherData() : m_settings("yanQt", "WeatherApp") {
+WeatherData::WeatherData() : m_settings("yanQt", "QWeather") {
     m_weatherLocation = m_settings.value("lastWeatherLocation").toJsonObject().toVariantMap();
 }
 

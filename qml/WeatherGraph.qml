@@ -2,15 +2,17 @@ import QtQuick
 import QtQuick.Layouts
 
 Canvas {
+    // default experimental values
     property var points: [25, 26, 28, 27, 25, 23]
     property string pointSuffix: "°"
     property int pointSpace: 60
     property int pointMinHeight: 100
     property var pointTopWeatherCodes: []
     property var pointBottomLabels: ["NOW", "2pm", "3pm", "4pm", "5pm", "6pm"]
-    property int pointOuterCircleRadii: 0
+    property int pointOuterCircleRadii: 7
     property bool pointerOuterCircleAnimation: true
 
+    // this animation causes like 0.5% cpu constantly, use pointerOuterCircleAnimation to enable/disable
     NumberAnimation on pointOuterCircleRadii {
         from: 0
         to: 7
@@ -66,6 +68,7 @@ Canvas {
             ctx.fillStyle = AppTheme.color?.text2
             ctx.fill()
 
+            // outer circle
             if (j == 0) {
                 ctx.strokeStyle = AppTheme.color?.text1
                 ctx.beginPath()
@@ -73,16 +76,20 @@ Canvas {
                 ctx.stroke()
             }
 
+            // inner circle
             ctx.moveTo(x, y + 5)
             ctx.lineWidth = 0.3
             ctx.strokeStyle = AppTheme.color?.text3
             ctx.lineTo(x, root.height - 30)
             ctx.stroke()
 
+            // draw point label and bottom label
             ctx.fillStyle = AppTheme.color?.text1
             ctx.fillText(points[j] + root.pointSuffix, x + 5, y - 10)
             ctx.fillText(pointBottomLabels[j], x - 10, root.height - 10)
 
+            // draw weather icons according to weather code
+            // skip first point
             if (j != 0 && (AppTheme.tempWeatherCode = pointTopWeatherCodes[j] || 0))
                 ctx.drawImage("../" + AppTheme.tempWeatherIcon, x, y - 45, 24, 24)
         }

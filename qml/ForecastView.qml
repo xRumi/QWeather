@@ -7,6 +7,7 @@ ColumnLayout {
     property real temperatureLow: 0
     property real apparentTemperature: 0
 
+    // for weather graph
     property var points: []
     property string pointSuffix: "°"
     property var pointBottomLabels: []
@@ -82,6 +83,7 @@ ColumnLayout {
         }
     }
     WeatherGraph {
+        // pass onto weather graph
         points: root.points
         pointSuffix: root.pointSuffix
         pointBottomLabels: root.pointBottomLabels
@@ -90,6 +92,6 @@ ColumnLayout {
         Layout.fillWidth: true
         Layout.fillHeight: true
         Layout.topMargin: 50
-        // Layout.maximumHeight: 300
+        Layout.maximumHeight: 300
     }
 }

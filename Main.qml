@@ -8,6 +8,7 @@ Window {
     visible: true
     title: qsTr("Weather App")
 
+    // qml element from c++ class
     WeatherData {
         id: weatherData
         onWeatherLocationChanged: {
@@ -20,6 +21,7 @@ Window {
     }
 
     // Background gradient
+    // Changes gradient color according to weather code
     Rectangle {
         anchors.fill: parent
         focus: true
@@ -30,8 +32,10 @@ Window {
         }
     }
 
+    // updates date at the location header every 1 sec
+    // updates weather data every hour
     Timer {
-        property int previousHour: 123 // anything above 24, for executing weatherData.updateWeatherLocation()
+        property int previousHour: 123 // anything above 23, forces weatherData.updateWeatherLocation() the first time
 
         interval: 1000
         repeat: true
@@ -52,9 +56,11 @@ Window {
         }
     }
 
+    // main body
     ColumnLayout {
         anchors.fill: parent
 
+        // top bar
         LocationHeader {
             id: locationArea
             city: weatherData.weatherLocation["city"]
@@ -67,12 +73,14 @@ Window {
                 NumberAnimation { duration: 500 }
             }
         }
+
         ForecastView {
             temperature: weatherData.weatherData["temperature"] || 0
             temperatureHigh: weatherData.weatherData["dailyForecastTempHigh"] || 0
             temperatureLow: weatherData.weatherData["dailyForecastTempLow"] || 0
             apparentTemperature: weatherData.weatherData["apparentTemperature"] || 0
 
+            // for weather graph
             points: weatherData.weatherData["dailyForecastTemps"] || []
             pointBottomLabels: weatherData.weatherData["dailyForecastHours"] || []
             pointTopWeatherCodes: weatherData.weatherData["dailyForecastWeatherCodes"] || []

@@ -11,6 +11,7 @@ int main(int argc, char *argv[])
     engine.loadFromModule("QWeather", "Main");
 
     std::cout << "Hello People of somewhere!!" << std::endl;
+    qDebug()  << "test qDebug";
 
     return app.exec();
 }
