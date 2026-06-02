@@ -1,2 +1,5 @@
 # QWeather
-Yet Another beautifully simple, modern Weather application featuring fluid animations and a stunningly clean design.
+Yet Another beautifully simple, modern weather application with fluid animations.
+
+# Demos
+![Night Clear Sky](./assets/demo/night-clearsky.webp)
