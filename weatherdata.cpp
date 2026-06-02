@@ -108,8 +108,10 @@ void WeatherData::updateWeatherData() {
             time = time.toLocalTime();
             QDateTime current = QDateTime::currentDateTime();
 
-            // skip previous dates
-            if (time.date().day() < current.date().day() && time.date().month() < current.date().month()) continue;
+            // skip previous months
+            if (time.date().month() < current.date().month()) continue;
+            // skip previous days of current month
+            if (time.date().month() == current.date().month() && time.date().day() < current.date().day()) continue;
 
             if (time.date().day() == current.date().day()) {
                 dailyForecastTempHigh = MAX(dailyForecastTempHigh, temps[i].toDouble());
