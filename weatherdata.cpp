@@ -98,7 +98,7 @@ void WeatherData::updateWeatherData() {
             temps = hourly["temperature_2m"].toArray(),
             weatherCodes = hourly["weather_code"].toArray();
 
-        int dailyForecastHourLimit = 25;
+        int dailyForecastHourLimit = 50;
         double dailyForecastTempHigh = -1000, dailyForecastTempLow = 1000;
         QJsonArray dailyForecastHours{};
         QJsonArray dailyForecastTemps{};

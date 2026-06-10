@@ -39,6 +39,7 @@ Canvas {
         })
 
         let perPointHeight = (root.height - pointMinHeight) / (maxPoint - minPoint)
+        let n = Math.min(Math.max(width / pointSpace + 1, 0), points.length)
 
         // dashed line
         ctx.setLineDash([10, 3, 3, 3])
@@ -50,7 +51,7 @@ Canvas {
 
         ctx.beginPath()
         ctx.moveTo(getX(0), getY(0))
-        for (let i = 1; i < points.length; i++) {
+        for (let i = 1; i < n; i++) {
             let x = getX(i), y = getY(i)
             let px = getX(i - 1), py = getY(i - 1)
             ctx.bezierCurveTo((px + x) / 2, py, (px + x) / 2, y, x, y)
@@ -60,7 +61,7 @@ Canvas {
         // dots
         ctx.setLineDash([])
         ctx.font = "16px sans-serif"
-        for (let j = 0; j < points.length; j++) {
+        for (let j = 0; j < n; j++) {
             let x = getX(j), y = getY(j)
 
             ctx.beginPath()
@@ -90,7 +91,7 @@ Canvas {
 
             // draw weather icons according to weather code
             // skip first point
-            if (j != 0 && (AppTheme.tempWeatherCode = pointTopWeatherCodes[j] || 0))
+            if (j != 0 && (AppTheme.tempWeatherCode = pointTopWeatherCodes[j] || 0) > 1)
                 ctx.drawImage("../" + AppTheme.tempWeatherIcon, x, y - 45, 24, 24)
         }
     }

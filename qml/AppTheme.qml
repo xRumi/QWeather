@@ -16,8 +16,8 @@ Item {
 
     property var weatherCodeDecode: {
         0:  { condition: "Clear Sky",           color: 0,  icon: root.isNight ? "assets/icons/moon.svg" : "assets/icons/sun.svg" },
-        1:  { condition: "Mainly Clear",        color: 0,  icon: root.isNight ? "assets/icons/moon.svg" : "assets/icons/sun-dim.svg" },
-        2:  { condition: "Partly Cloudy",       color: 2,  icon: root.isNight ? "assets/icons/cloud-moon.svg" : "assets/icons/cloud-sun.svg" },
+        1:  { condition: "Mainly Clear",        color: 0,  icon: root.isNight ? "assets/icons/cloud-moon.svg" : "assets/icons/sun-dim.svg" },
+        2:  { condition: "Partly Cloudy",       color: 2,  icon: "assets/icons/cloud.svg" },
         3:  { condition: "Overcast",            color: 2,  icon: "assets/icons/cloud.svg" },
         45: { condition: "Fog",                 color: 45, icon: "assets/icons/cloud-fog.svg" },
         48: { condition: "Rime Fog",            color: 46, icon: "assets/icons/cloud-fog.svg" },
