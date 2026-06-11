@@ -27,23 +27,26 @@ ColumnLayout {
             spacing: 15
 
             Image {
-                source: "../" + AppTheme.weatherIcon
+                source: "../" + AppState.weatherIcon
                 sourceSize: Qt.size(64, 64)
             }
             Text {
-                text: AppTheme.condition
-                color: AppTheme.color.text2
+                height: 55
+                text: AppState.condition
+                color: AppState.color.text2
                 font {
                     pixelSize: 35
                     weight: 300
                 }
+                verticalAlignment: Text.AlignVCenter
+                horizontalAlignment: Text.AlignHCenter
             }
         }
         Row {
             spacing: 50
             Text {
                 text: root.temperature.toFixed(1) + "°"
-                color: AppTheme.color.text1
+                color: AppState.color.text1
                 font {
                     pixelSize: 110
                     weight: 300
@@ -53,7 +56,7 @@ ColumnLayout {
                 Text {
                     Layout.topMargin: 60
                     text: root.temperatureHigh.toFixed(1) + "° C"
-                    color: AppTheme.color.text3
+                    color: AppState.color.text3
                     font {
                         pixelSize: 18
                     }
@@ -61,12 +64,12 @@ ColumnLayout {
                 Rectangle {
                     Layout.fillWidth: true
                     height: 1
-                    color: AppTheme.color.text3
+                    color: AppState.color.text3
                 }
 
                 Text {
                     text: root.temperatureLow.toFixed(1) + "° C"
-                    color: AppTheme.color.text3
+                    color: AppState.color.text3
                     font {
                         pixelSize: 18
                     }
@@ -76,7 +79,7 @@ ColumnLayout {
         Text {
             Layout.topMargin: -20
             text: "Feels like <b>" + apparentTemperature.toFixed(1) + "°</b> C"
-            color: AppTheme.color.text3
+            color: AppState.color.text3
             font {
                 pixelSize: 18
             }

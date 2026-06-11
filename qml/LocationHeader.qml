@@ -12,7 +12,7 @@ ColumnLayout {
     Text {
         Layout.fillWidth: true
         text: root.city
-        color: AppTheme.color.text2
+        color: AppState.color.text2
         font {
             pixelSize: 25
             letterSpacing: 1.2
@@ -24,7 +24,7 @@ ColumnLayout {
         Layout.fillWidth: true
         Layout.topMargin: -5
         text: root.date
-        color: AppTheme.color.text3
+        color: AppState.color.text3
         font {
             pixelSize: 17
             weight: 400

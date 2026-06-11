@@ -15,8 +15,8 @@ Window {
             weatherData.updateWeatherData()
         }
         onWeatherDataChanged: {
-            AppTheme.weatherCode = weatherData.weatherData["weatherCode"]
-            AppTheme.isNight = weatherData.weatherData["isNight"]
+            AppState.weatherCode = weatherData.weatherData["weatherCode"]
+            AppState.isNight = weatherData.weatherData["isNight"]
         }
     }
 
@@ -27,12 +27,12 @@ Window {
         focus: true
         Keys.onEscapePressed: Qt.quit()
         gradient: Gradient {
-            GradientStop { position: 0; color: AppTheme.color.gradientTop }
-            GradientStop { position: 1; color: AppTheme.color.gradientBottom }
+            GradientStop { position: 0; color: AppState.color.gradientTop }
+            GradientStop { position: 1; color: AppState.color.gradientBottom }
         }
     }
 
-    // updates date at the location header every 1 sec
+    // updates location header date every 1 sec
     // updates weather data every hour
     Timer {
         property int previousHour: 123 // anything above 23, forces weatherData.updateWeatherLocation() the first time
@@ -54,6 +54,13 @@ Window {
                 previousHour = hours
             }
         }
+    }
+    // updates weather data every 15 minutes
+    Timer {
+        interval: 15 * 60 * 1000
+        repeat: true
+        running: true
+        onTriggered: weatherData.updateWeatherLocation()
     }
 
     // bouncing dots for loading animation

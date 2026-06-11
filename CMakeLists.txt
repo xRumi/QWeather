@@ -13,7 +13,7 @@ qt_add_executable(qWeather
 )
 
 set(qml_singletons
-    qml/AppTheme.qml
+    qml/AppState.qml
 )
 set_source_files_properties(${qml_singletons}
     PROPERTIES QT_QML_SINGLETON_TYPE TRUE)
@@ -23,13 +23,14 @@ qt_add_qml_module(qWeather
     QML_FILES
         Main.qml
         SOURCES weatherdata.h weatherdata.cpp
-        QML_FILES qml/AppTheme.qml
+        QML_FILES qml/AppState.qml
         QML_FILES qml/LocationHeader.qml
         QML_FILES qml/ForecastView.qml
         QML_FILES qml/WeatherGraph.qml
         RESOURCES assets/icons/cloud-lightning.svg assets/icons/moon.svg  assets/icons/sun.svg
         RESOURCES assets/icons/cloud-fog.svg assets/icons/cloud-lightning.svg assets/icons/cloud-moon.svg assets/icons/cloud-rain.svg assets/icons/cloud-sun.svg assets/icons/cloud.svg assets/icons/moon.svg assets/icons/sun-dim.svg assets/icons/sun.svg
         QML_FILES qml/BouncingDots.qml
+        RESOURCES assets/icons/drop-light.svg
 )
 # Qt for iOS sets MACOSX_BUNDLE_GUI_IDENTIFIER automatically since Qt 6.1.
 # If you are developing for iOS or macOS you should consider setting an

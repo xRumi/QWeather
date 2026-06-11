@@ -43,7 +43,7 @@ Canvas {
 
         // dashed line
         ctx.setLineDash([10, 3, 3, 3])
-        ctx.strokeStyle = AppTheme.color?.text3
+        ctx.strokeStyle = AppState.color?.text3
         ctx.lineWidth = 2
 
         let getX = (i) => 10 + i * pointSpace
@@ -66,12 +66,12 @@ Canvas {
 
             ctx.beginPath()
             ctx.arc(x, y, 2.8, 0, 2 * Math.PI)
-            ctx.fillStyle = AppTheme.color?.text2
+            ctx.fillStyle = AppState.color?.text2
             ctx.fill()
 
             // outer circle
             if (j == 0) {
-                ctx.strokeStyle = AppTheme.color?.text1
+                ctx.strokeStyle = AppState.color?.text1
                 ctx.beginPath()
                 ctx.arc(x, y, root.pointOuterCircleRadii, 0, 2 * Math.PI)
                 ctx.stroke()
@@ -80,19 +80,19 @@ Canvas {
             // inner circle
             ctx.moveTo(x, y + 5)
             ctx.lineWidth = 0.3
-            ctx.strokeStyle = AppTheme.color?.text3
+            ctx.strokeStyle = AppState.color?.text3
             ctx.lineTo(x, root.height - 30)
             ctx.stroke()
 
             // draw point label and bottom label
-            ctx.fillStyle = AppTheme.color?.text1
+            ctx.fillStyle = AppState.color?.text1
             ctx.fillText(points[j] + root.pointSuffix, x + 5, y - 10)
             ctx.fillText(pointBottomLabels[j], x - 10, root.height - 10)
 
             // draw weather icons according to weather code
             // skip first point
-            if (j != 0 && (AppTheme.tempWeatherCode = pointTopWeatherCodes[j] || 0) > 1)
-                ctx.drawImage("../" + AppTheme.tempWeatherIcon, x, y - 45, 24, 24)
+            if (j != 0 && (AppState.tempWeatherCode = pointTopWeatherCodes[j] || 0) > 1)
+                ctx.drawImage("../" + AppState.tempWeatherIcon, x, y - 45, 24, 24)
         }
     }
 }

@@ -18,7 +18,7 @@ Item {
                 height: width
                 radius: width / 2
                 antialiasing: true
-                color: AppTheme.color?.text1 || "red"
+                color: AppState.color?.text1 || "red"
 
                 SequentialAnimation on y {
                     loops: Animation.Infinite
