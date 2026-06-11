@@ -16,7 +16,7 @@ ColumnLayout {
     id: root
 
     ColumnLayout {
-        // Layout.alignment: Qt.AlignCenter
+        Layout.alignment: Qt.AlignCenter
 
         Row {
             spacing: 15
