@@ -1,7 +1,7 @@
 import QtQuick
 import QtQuick.Layouts
 
-Canvas {
+Flickable {
     // default experimental values
     property var points: [25, 26, 28, 27, 25, 23]
     property string pointSuffix: "°"
@@ -20,79 +20,87 @@ Canvas {
         loops: Animation.Infinite
         running: root.pointerOuterCircleAnimation
     }
-    onPointOuterCircleRadiiChanged: requestPaint()
+    onPointOuterCircleRadiiChanged: canvas.requestPaint()
 
     id: root
-    antialiasing: true
+    // contentHeight: canvas.height
+    contentWidth: canvas.width
+    clip: true
 
-    onPaint: function() {
-        if (!points?.length) return
+    Canvas {
+        id: canvas
+        antialiasing: true
+        height: root.height
+        width: points.length * pointSpace
 
-        const ctx = getContext("2d")
-        ctx.clearRect(0, 0, root.width, root.height)
-        ctx.reset()
+        onPaint: function() {
+            if (!points?.length) return
 
-        let minPoint = points[0], maxPoint = points[0];
-        points.forEach(function(v) {
-            minPoint = Math.min(minPoint, v)
-            maxPoint = Math.max(maxPoint, v)
-        })
+            const ctx = getContext("2d")
+            ctx.clearRect(0, 0, root.width, root.height)
+            ctx.reset()
 
-        let perPointHeight = (root.height - pointMinHeight) / (maxPoint - minPoint)
-        let n = Math.min(Math.max(width / pointSpace + 1, 0), points.length)
+            let minPoint = points[0], maxPoint = points[0];
+            points.forEach(function(v) {
+                minPoint = Math.min(minPoint, v)
+                maxPoint = Math.max(maxPoint, v)
+            })
 
-        // dashed line
-        ctx.setLineDash([10, 3, 3, 3])
-        ctx.strokeStyle = AppState.color?.text3
-        ctx.lineWidth = 2
+            let perPointHeight = (root.height - pointMinHeight) / (maxPoint - minPoint)
 
-        let getX = (i) => 10 + i * pointSpace
-        let getY = (i) => 45 + (root.height - pointMinHeight) - (points[i] - minPoint) * perPointHeight
+            // dashed line
+            ctx.setLineDash([10, 3, 3, 3])
+            ctx.strokeStyle = AppState.color?.text3
+            ctx.lineWidth = 2
 
-        ctx.beginPath()
-        ctx.moveTo(getX(0), getY(0))
-        for (let i = 1; i < n; i++) {
-            let x = getX(i), y = getY(i)
-            let px = getX(i - 1), py = getY(i - 1)
-            ctx.bezierCurveTo((px + x) / 2, py, (px + x) / 2, y, x, y)
-        }
-        ctx.stroke()
-
-        // dots
-        ctx.setLineDash([])
-        ctx.font = "16px sans-serif"
-        for (let j = 0; j < n; j++) {
-            let x = getX(j), y = getY(j)
+            let getX = (i) => 10 + i * pointSpace
+            let getY = (i) => 45 + (root.height - pointMinHeight) - (points[i] - minPoint) * perPointHeight
 
             ctx.beginPath()
-            ctx.arc(x, y, 2.8, 0, 2 * Math.PI)
-            ctx.fillStyle = AppState.color?.text2
-            ctx.fill()
-
-            // outer circle
-            if (j == 0) {
-                ctx.strokeStyle = AppState.color?.text1
-                ctx.beginPath()
-                ctx.arc(x, y, root.pointOuterCircleRadii, 0, 2 * Math.PI)
-                ctx.stroke()
+            ctx.moveTo(getX(0), getY(0))
+            for (let i = 1; i < points.length; i++) {
+                let x = getX(i), y = getY(i)
+                let px = getX(i - 1), py = getY(i - 1)
+                ctx.bezierCurveTo((px + x) / 2, py, (px + x) / 2, y, x, y)
             }
-
-            // inner circle
-            ctx.moveTo(x, y + 5)
-            ctx.lineWidth = 0.3
-            ctx.strokeStyle = AppState.color?.text3
-            ctx.lineTo(x, root.height - 30)
             ctx.stroke()
 
-            // draw point label and bottom label
-            ctx.fillStyle = AppState.color?.text1
-            ctx.fillText(points[j] + root.pointSuffix, x + 5, y - 10)
-            ctx.fillText(pointBottomLabels[j], x - 10, root.height - 10)
+            // dots
+            ctx.setLineDash([])
+            ctx.font = "16px sans-serif"
+            for (let j = 0; j < points.length; j++) {
+                let x = getX(j), y = getY(j)
 
-            // draw weather icons according to weather code
-            // skip first point
-            if (j != 0 && (AppState.tempWeatherCode = pointTopWeatherCodes[j] || 0) > 1)
-                ctx.drawImage("../" + AppState.tempWeatherIcon, x, y - 45, 24, 24)
+                ctx.beginPath()
+                ctx.arc(x, y, 2.8, 0, 2 * Math.PI)
+                ctx.fillStyle = AppState.color?.text2
+                ctx.fill()
+
+                // outer circle
+                if (j == 0) {
+                    ctx.strokeStyle = AppState.color?.text1
+                    ctx.beginPath()
+                    ctx.arc(x, y, root.pointOuterCircleRadii, 0, 2 * Math.PI)
+                    ctx.stroke()
+                }
+
+                // inner circle
+                ctx.moveTo(x, y + 5)
+                ctx.lineWidth = 0.3
+                ctx.strokeStyle = AppState.color?.text3
+                ctx.lineTo(x, root.height - 30)
+                ctx.stroke()
+
+                // draw point label and bottom label
+                ctx.fillStyle = AppState.color?.text1
+                ctx.fillText(points[j] + root.pointSuffix, x + 5, y - 10)
+                ctx.fillText(pointBottomLabels[j], x - 10, root.height - 10)
+
+                // draw weather icons according to weather code
+                // skip first point
+                if (j != 0 && (AppState.tempWeatherCode = pointTopWeatherCodes[j] || 0) > 1)
+                    ctx.drawImage("../" + AppState.tempWeatherIcon, x, y - 45, 24, 24)
+            }
         }
     }
 }
