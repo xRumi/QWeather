@@ -2,9 +2,11 @@ import QtQuick
 import QtQuick.Layouts
 
 ColumnLayout {
-    property string city: "Weather App"
-    property string country: ""
-    property string countryCode: ""
+    required property var weatherLocation
+
+    property string city: weatherLocation["city"] || "Weather App"
+    property string country: weatherLocation["country"] || "yanQt"
+    property string countryCode: weatherLocation["countryCode"] || "yq"
     property string date: ""
 
     id: root

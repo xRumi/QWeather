@@ -4,8 +4,9 @@ pragma Singleton
 
 Item {
     id: root
-    property int weatherCode: 0
-    property bool isNight: false
+    property var weatherData
+    property int weatherCode: weatherData["weatherCode"] || 0
+    property bool isNight: weatherData["isNight"] || false
     property var condition: weatherCodeDecode[weatherCode]?.condition || "Unknown"
     property var color: colors[weatherCodeDecode[weatherCode]?.color || 0]
     property var weatherIcon: weatherCodeDecode[weatherCode]?.icon
@@ -15,8 +16,8 @@ Item {
     property var tempWeatherIcon: weatherCodeDecode[tempWeatherCode]?.icon
 
     property var weatherCodeDecode: {
-        0:  { condition: "Clear Sky",           color: 0,  icon: root.isNight ? "assets/icons/moon.svg" : "assets/icons/sun.svg" },
-        1:  { condition: "Mainly Clear",        color: 0,  icon: root.isNight ? "assets/icons/cloud-moon.svg" : "assets/icons/sun-dim.svg" },
+        0:  { condition: "Clear Sky",           color: 0,  icon: isNight ? "assets/icons/moon.svg" : "assets/icons/sun.svg" },
+        1:  { condition: "Mainly Clear",        color: 0,  icon: isNight ? "assets/icons/cloud-moon.svg" : "assets/icons/sun-dim.svg" },
         2:  { condition: "Partly Cloudy",       color: 2,  icon: "assets/icons/cloud.svg" },
         3:  { condition: "Overcast",            color: 2,  icon: "assets/icons/cloud.svg" },
         45: { condition: "Fog",                 color: 45, icon: "assets/icons/cloud-fog.svg" },

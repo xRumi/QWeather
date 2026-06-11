@@ -2,16 +2,11 @@ import QtQuick
 import QtQuick.Layouts
 
 ColumnLayout {
-    property real temperature: 0
-    property real temperatureHigh: 0
-    property real temperatureLow: 0
-    property real apparentTemperature: 0
-
-    // for weather graph
-    property var points: []
-    property string pointSuffix: "°"
-    property var pointBottomLabels: []
-    property var pointTopWeatherCodes: []
+    property var weatherData
+    property real temperature: weatherData["temperature"] || 0
+    property real temperatureHigh: weatherData["dailyForecastTempHigh"] || 0
+    property real temperatureLow: weatherData["dailyForecastTempLow"] || 0
+    property real apparentTemperature: weatherData["apparentTemperature"] || 0
 
     Behavior on temperature { NumberAnimation { duration: 800 } }
     Behavior on temperatureHigh { NumberAnimation { duration: 800 } }
@@ -31,7 +26,7 @@ ColumnLayout {
                 sourceSize: Qt.size(64, 64)
             }
             Text {
-                height: 55
+                height: 50
                 text: AppState.condition
                 color: AppState.color.text2
                 font {
@@ -86,11 +81,11 @@ ColumnLayout {
         }
     }
     WeatherGraph {
-        // pass onto weather graph
-        points: root.points
-        pointSuffix: root.pointSuffix
-        pointBottomLabels: root.pointBottomLabels
-        pointTopWeatherCodes: root.pointTopWeatherCodes
+        // for weather graph
+        points: root.weatherData["dailyForecastTemps"] || []
+        pointSuffix: "°"
+        pointBottomLabels: root.weatherData["dailyForecastHours"] || []
+        pointTopWeatherCodes: root.weatherData["dailyForecastWeatherCodes"] || []
 
         Layout.fillWidth: true
         Layout.fillHeight: true

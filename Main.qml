@@ -10,13 +10,12 @@ Window {
 
     // qml element from c++ class
     WeatherData {
-        id: weatherData
+        id: weatherElement
         onWeatherLocationChanged: {
-            weatherData.updateWeatherData()
+            weatherElement.updateWeatherData()
         }
         onWeatherDataChanged: {
-            AppState.weatherCode = weatherData.weatherData["weatherCode"]
-            AppState.isNight = weatherData.weatherData["isNight"]
+            AppState.weatherData = weatherElement.weatherData
         }
     }
 
@@ -50,7 +49,7 @@ Window {
             locationArea.date = `${days[date.getDay()]}, ${(hours % 12) || 12}:${date.getMinutes().toString().padStart(2, '0')} ${pm ? "PM" : "AM"}`
 
             if (previousHour != hours) {
-                weatherData.updateWeatherLocation()
+                weatherElement.updateWeatherLocation()
                 previousHour = hours
             }
         }
@@ -60,14 +59,14 @@ Window {
         interval: 15 * 60 * 1000
         repeat: true
         running: true
-        onTriggered: weatherData.updateWeatherLocation()
+        onTriggered: weatherElement.updateWeatherLocation()
     }
 
     // bouncing dots for loading animation
     BouncingDots {
         anchors.fill: parent
         anchors.topMargin: 400
-        visible: weatherData.isWeatherDataReady === false
+        visible: !weatherElement.isWeatherDataReady
     }
 
     // main body
@@ -76,31 +75,20 @@ Window {
 
         // top bar
         LocationHeader {
-            id: locationArea
-            city: weatherData.weatherLocation["city"]
-            country: weatherData.weatherLocation["country"]
-            countryCode: weatherData.weatherLocation["countryCode"]
-            date: ""
+            weatherLocation: weatherElement.weatherLocation
 
-            Layout.topMargin: weatherData.isWeatherDataReady ? 0 : (parent.height - height) / 2
+            id: locationArea
+            Layout.topMargin: weatherElement.isWeatherDataReady ? 0 : (parent.height - height) / 2
             Behavior on Layout.topMargin {
                 NumberAnimation { duration: 500 }
             }
         }
 
         ForecastView {
-            temperature: weatherData.weatherData["temperature"] || 0
-            temperatureHigh: weatherData.weatherData["dailyForecastTempHigh"] || 0
-            temperatureLow: weatherData.weatherData["dailyForecastTempLow"] || 0
-            apparentTemperature: weatherData.weatherData["apparentTemperature"] || 0
-
-            // for weather graph
-            points: weatherData.weatherData["dailyForecastTemps"] || []
-            pointBottomLabels: weatherData.weatherData["dailyForecastHours"] || []
-            pointTopWeatherCodes: weatherData.weatherData["dailyForecastWeatherCodes"] || []
+            weatherData: weatherElement.weatherData
 
             id: dailyWeatherArea
-            opacity: weatherData.isWeatherDataReady ? 1 : 0
+            opacity: weatherElement.isWeatherDataReady ? 1 : 0
             Layout.leftMargin: 25
             Layout.topMargin: 100
             Layout.alignment: Qt.AlignCenter
