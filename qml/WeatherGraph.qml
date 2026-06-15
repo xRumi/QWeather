@@ -53,7 +53,7 @@ Flickable {
             ctx.strokeStyle = AppState.color?.text3
             ctx.lineWidth = 2
 
-            let getX = (i) => 10 + i * pointSpace
+            let getX = (i) => 30 + i * pointSpace
             let getY = (i) => 45 + (root.height - pointMinHeight) - (points[i] - minPoint) * perPointHeight
 
             ctx.beginPath()

@@ -1,5 +1,6 @@
 import QtQuick
 import QtQuick.Layouts
+import QtQuick.Controls
 import QWeather
 
 Window {
@@ -84,19 +85,55 @@ Window {
             }
         }
 
-        ForecastView {
-            weatherData: weatherElement.weatherData
+        PageIndicator {
+            count: swipeView.count
+            currentIndex: swipeView.currentIndex
+            Layout.topMargin: 5
+            Layout.alignment: Qt.AlignHCenter
+            visible: weatherElement.isWeatherDataReady
+        }
 
-            id: dailyWeatherArea
-            opacity: weatherElement.isWeatherDataReady ? 1 : 0
-            Layout.leftMargin: 25
-            Layout.topMargin: 100
-            Layout.alignment: Qt.AlignCenter
+        SwipeView {
+            id: swipeView
+            currentIndex: 0
+            interactive: weatherElement.isWeatherDataReady
+
             Layout.fillHeight: true
             Layout.fillWidth: true
 
-            Behavior on opacity {
-                OpacityAnimator { duration: 1000 }
+            ColumnLayout {
+                ForecastHourly {
+                    weatherData: weatherElement.weatherData
+
+                    id: dailyWeatherArea
+                    opacity: weatherElement.isWeatherDataReady ? 1 : 0
+                    Layout.topMargin: 80
+
+                    Behavior on opacity {
+                        OpacityAnimator { duration: 1000 }
+                    }
+                }
+                WeatherGraph {
+                    // for weather graph
+                    points: weatherElement.weatherData["dailyForecastTemps"] || []
+                    pointSuffix: "°"
+                    pointBottomLabels: weatherElement.weatherData["dailyForecastHours"] || []
+                    pointTopWeatherCodes: weatherElement.weatherData["dailyForecastWeatherCodes"] || []
+
+                    Layout.fillWidth: true
+                    Layout.fillHeight: true
+                    Layout.topMargin: 50
+                    Layout.maximumHeight: 300
+                }
+            }
+
+            ColumnLayout {
+                ForecastDaily {
+                    Layout.topMargin: 80
+                    Layout.alignment: Qt.AlignCenter
+                    Layout.fillHeight: true
+                    Layout.fillWidth: true
+                }
             }
         }
     }

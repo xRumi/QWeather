@@ -25,12 +25,12 @@ qt_add_qml_module(qWeather
         SOURCES weatherdata.h weatherdata.cpp
         QML_FILES qml/AppState.qml
         QML_FILES qml/LocationHeader.qml
-        QML_FILES qml/ForecastView.qml
+        QML_FILES qml/ForecastHourly.qml
         QML_FILES qml/WeatherGraph.qml
-        RESOURCES assets/icons/cloud-lightning.svg assets/icons/moon.svg  assets/icons/sun.svg
-        RESOURCES assets/icons/cloud-fog.svg assets/icons/cloud-lightning.svg assets/icons/cloud-moon.svg assets/icons/cloud-rain.svg assets/icons/cloud-sun.svg assets/icons/cloud.svg assets/icons/moon.svg assets/icons/sun-dim.svg assets/icons/sun.svg
         QML_FILES qml/BouncingDots.qml
         RESOURCES assets/icons/drop-light.svg
+        QML_FILES qml/ForecastDaily.qml
+        RESOURCES assets/icons/cloud-fog.svg assets/icons/cloud-lightning.svg assets/icons/cloud-moon.svg assets/icons/cloud-rain.svg assets/icons/cloud-sun.svg assets/icons/cloud.svg assets/icons/drop-light.svg assets/icons/eye-light.svg assets/icons/moon.svg assets/icons/speedometer-light.svg assets/icons/sun-dim.svg assets/icons/sun.svg assets/icons/thermometer-cold-light.svg assets/icons/thermometer-hot-light.svg assets/icons/thermometer-light.svg assets/icons/thermometer-simple-light.svg assets/icons/wind-light.svg
 )
 # Qt for iOS sets MACOSX_BUNDLE_GUI_IDENTIFIER automatically since Qt 6.1.
 # If you are developing for iOS or macOS you should consider setting an
