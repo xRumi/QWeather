@@ -66,7 +66,9 @@ void WeatherData::updateWeatherLocation() {
 }
 
 void WeatherData::updateWeatherData() {
-    QString urlStr = QString("https://api.open-meteo.com/v1/forecast?latitude=%1&longitude=%2&hourly=temperature_2m,rain,weather_code&current=temperature_2m,relative_humidity_2m,apparent_temperature,wind_speed_10m,weather_code,is_day,rain,cloud_cover,surface_pressure")
+    QString urlStr = QString("https://api.open-meteo.com/v1/forecast?latitude=%1&longitude=%2&"
+                             "hourly=temperature_2m,rain,weather_code,visibility,precipitation_probability,dew_point_2m&"
+                             "current=temperature_2m,relative_humidity_2m,apparent_temperature,wind_speed_10m,weather_code,is_day,rain,cloud_cover,surface_pressure,precipitation")
                          .arg(m_weatherLocation["latitude"].toString(), m_weatherLocation["longitude"].toString());
     QNetworkRequest req{ QUrl(urlStr) };
     req.setTransferTimeout(10000);
@@ -94,16 +96,22 @@ void WeatherData::updateWeatherData() {
         m_weatherData["rain"] = current["rain"].toDouble();
         m_weatherData["cloudCover"] = current["cloud_cover"].toDouble();
         m_weatherData["surfacePressure"] = current["surface_pressure"].toDouble();
+        m_weatherData["precipitation"] = current["precipitation"].toDouble();
 
         QJsonValue hourly = resultJson["hourly"];
         QJsonArray times = hourly["time"].toArray(),
             temps = hourly["temperature_2m"].toArray(),
-            weatherCodes = hourly["weather_code"].toArray();
+            precipitationProbability = hourly["precipitation_probability"].toArray(),
+            weatherCodes = hourly["weather_code"].toArray(),
+            dewPoints = hourly["dew_point_2m"].toArray();
+
+        m_weatherData["dewPoint"] = hourly["dew_point_2m"].toArray()[0].toDouble();
 
         int dailyForecastHourLimit = 50;
         double dailyForecastTempHigh = -1000, dailyForecastTempLow = 1000;
         QJsonArray dailyForecastHours{};
         QJsonArray dailyForecastTemps{};
+        QJsonArray dailyForecastrPecipitationProbability{};
         QJsonArray dailyForecastWeatherCodes;
         for (int i = 0; i < times.size(); i++) {
             QDateTime time = QDateTime::fromString(times[i].toString() + "Z", Qt::ISODate);
@@ -128,6 +136,7 @@ void WeatherData::updateWeatherData() {
                 int hour = time.time().hour();
                 dailyForecastHours << QString::number((hour % 12) ? (hour % 12) : 12) + (hour >= 12 ? "pm" : "am");
                 dailyForecastTemps << temps[i].toDouble();
+                dailyForecastrPecipitationProbability << precipitationProbability[i].toDouble();
                 dailyForecastWeatherCodes << weatherCodes[i].toInt();
             }
         }
@@ -136,6 +145,7 @@ void WeatherData::updateWeatherData() {
         m_weatherData["dailyForecastTempLow"] = dailyForecastTempLow;
         m_weatherData["dailyForecastHours"] = dailyForecastHours;
         m_weatherData["dailyForecastTemps"] = dailyForecastTemps;
+        m_weatherData["dailyForecastPrecipitationProbability"] = dailyForecastrPecipitationProbability;
         m_weatherData["dailyForecastWeatherCodes"] = dailyForecastWeatherCodes;
 
         setIsWeatherDataReady(true);

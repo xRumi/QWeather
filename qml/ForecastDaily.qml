@@ -3,6 +3,8 @@ import QtQuick.Layouts
 import QtQuick.Effects
 
 ColumnLayout {
+    property var backgroundItem
+
     id: root
     Layout.alignment: Qt.AlignCenter
 
@@ -13,14 +15,19 @@ ColumnLayout {
         property string iconName
         property string middleText
         property string bottomText
+        property real absoluteX: card.mapToItem(null, 0, 0).x
+        property real absoluteY: card.mapToItem(null, 0, 0).y
 
+        id: card
         color: "transparent"
         border {
             color: AppState.color.gradientBottom
+            width: 1.5
         }
         radius: 5
 
         Layout.maximumHeight: 180
+        Layout.minimumHeight: 120
         Layout.fillHeight: true
         Layout.fillWidth: true
 
@@ -52,12 +59,6 @@ ColumnLayout {
                 Layout.fillWidth: true
             }
         }
-        // MultiEffect {
-        //     source: parent
-        //     anchors.fill: parent
-        //     blurEnabled: true
-        //     blur: 0.5
-        // }
     }
 
     Text {
@@ -74,6 +75,7 @@ ColumnLayout {
         Layout.maximumWidth: 350
 
         CardItem {
+            id: temp
             iconName:   AppState.weatherData["apparentTemperature"] <= 15 ?
                             "assets/icons/thermometer-cold-light.svg" :
                         AppState.weatherData["apparentTemperature"] >= 30 ?
@@ -98,14 +100,14 @@ ColumnLayout {
             bottomText: (AppState.weatherData["surfacePressure"] / 10).toFixed(1) + " kPa"
         }
         CardItem {
-            iconName: "assets/icons/eye-light.svg"
-            middleText: "Visibility"
-            bottomText: "N/A"
+            iconName: "assets/icons/cloud-rain.svg"
+            middleText: "Precipitation"
+            bottomText: AppState.weatherData["precipitation"] + " mm"
         }
         CardItem {
             iconName: "assets/icons/thermometer-light.svg"
-            middleText: "Drew Point"
-            bottomText: "N/A° C"
+            middleText: "Dew Point"
+            bottomText: AppState.weatherData["dewPoint"] + "° C"
         }
     }
 }

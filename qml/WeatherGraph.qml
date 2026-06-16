@@ -65,6 +65,8 @@ Flickable {
             }
             ctx.stroke()
 
+            let previousWeatherCode = 0
+
             // dots
             ctx.setLineDash([])
             ctx.font = "16px sans-serif"
@@ -98,8 +100,18 @@ Flickable {
 
                 // draw weather icons according to weather code
                 // skip first point
-                if (j != 0 && (AppState.tempWeatherCode = pointTopWeatherCodes[j] || 0) > 1)
-                    ctx.drawImage("../" + AppState.tempWeatherIcon, x, y - 45, 24, 24)
+                if (j != 0) {
+                    // skip consecutive weather codes
+                    if (previousWeatherCode !== pointTopWeatherCodes[j]) {
+                        previousWeatherCode = pointTopWeatherCodes[j]
+
+                        // skip clearsky codes
+                        if (pointTopWeatherCodes[j] > 1) {
+                            AppState.tempWeatherCode = pointTopWeatherCodes[j] || 0
+                            ctx.drawImage("../" + AppState.tempWeatherIcon, x, y - 45, 24, 24)
+                        }
+                    }
+                }
             }
         }
     }

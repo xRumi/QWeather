@@ -23,6 +23,7 @@ Window {
     // Background gradient
     // Changes gradient color according to weather code
     Rectangle {
+        id: backgroundGradient
         anchors.fill: parent
         focus: true
         Keys.onEscapePressed: Qt.quit()
@@ -129,10 +130,24 @@ Window {
 
             ColumnLayout {
                 ForecastDaily {
+                    backgroundItem: backgroundGradient
+
                     Layout.topMargin: 80
                     Layout.alignment: Qt.AlignCenter
                     Layout.fillHeight: true
                     Layout.fillWidth: true
+                }
+                WeatherGraph {
+                    // for weather graph
+                    points: weatherElement.weatherData["dailyForecastPrecipitationProbability"] || []
+                    pointSuffix: "%"
+                    pointBottomLabels: weatherElement.weatherData["dailyForecastHours"] || []
+                    pointTopWeatherCodes: weatherElement.weatherData["dailyForecastWeatherCodes"] || []
+
+                    Layout.fillWidth: true
+                    Layout.fillHeight: true
+                    Layout.topMargin: 25
+                    Layout.maximumHeight: 300
                 }
             }
         }
