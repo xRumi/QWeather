@@ -42,6 +42,7 @@ void WeatherData::updateWeatherLocation() {
     connect(reply, &QNetworkReply::finished, this, [this, reply]() {
         bool success = false;
         QJsonDocument resultJson = parseJsonFromReply(reply, success);
+        reply->deleteLater();
         if (!success) {
             QTimer::singleShot(2000, this, [this]() {
                 qDebug() << "Retrying... updateWeatherLocation()";
@@ -74,6 +75,7 @@ void WeatherData::updateWeatherData() {
     connect(reply, &QNetworkReply::finished, this, [this, reply]() {
         bool success = false;
         QJsonDocument resultJson = parseJsonFromReply(reply, success);
+        reply->deleteLater();
         if (!success) {
             QTimer::singleShot(2000, this, [this]() {
                 qDebug() << "Retrying... updateWeatherData()";

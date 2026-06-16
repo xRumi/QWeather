@@ -95,7 +95,7 @@ ColumnLayout {
         CardItem {
             iconName: "assets/icons/speedometer-light.svg"
             middleText: "Pressure"
-            bottomText: (AppState.weatherData["surfacePressure"] / 10) + " kPa"
+            bottomText: (AppState.weatherData["surfacePressure"] / 10).toFixed(1) + " kPa"
         }
         CardItem {
             iconName: "assets/icons/eye-light.svg"
