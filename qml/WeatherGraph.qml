@@ -3,24 +3,24 @@ import QtQuick.Layouts
 
 Flickable {
     // default experimental values
-    property var points: [25, 26, 28, 27, 25, 23]
-    property string pointSuffix: "°"
-    property int pointSpace: 60
-    property int pointMinHeight: 100
-    property var pointTopWeatherCodes: []
-    property var pointBottomLabels: ["NOW", "2pm", "3pm", "4pm", "5pm", "6pm"]
-    property int pointOuterCircleRadii: 7
-    property bool pointerOuterCircleAnimation: true
+    property var values: [25, 26, 28, 27, 25, 23]
+    property string valueSuffix: "°"
+    property int perValueWidth: 60
+    property int minHeight: 100
+    property var topLabelWeatherCodes: []
+    property var bottomLabels: ["NOW", "2pm", "3pm", "4pm", "5pm", "6pm"]
+    property int outerCircleRadii: 7
+    property bool outerCircleAnimation: true
 
-    // this animation causes like 0.5% cpu constantly, use pointerOuterCircleAnimation to enable/disable
-    NumberAnimation on pointOuterCircleRadii {
+    // this animation causes like 0.5% cpu constantly, use outerCircleAnimation to enable/disable
+    NumberAnimation on outerCircleRadii {
         from: 0
         to: 7
         duration: 1500
         loops: Animation.Infinite
-        running: root.pointerOuterCircleAnimation
+        running: root.outerCircleAnimation
     }
-    onPointOuterCircleRadiiChanged: canvas.requestPaint()
+    onOuterCircleRadiiChanged: canvas.requestPaint()
 
     id: root
     // contentHeight: canvas.height
@@ -31,34 +31,34 @@ Flickable {
         id: canvas
         antialiasing: true
         height: root.height
-        width: points.length * pointSpace
+        width: values.length * perValueWidth
 
         onPaint: function() {
-            if (!points?.length) return
+            if (!values?.length) return
 
             const ctx = getContext("2d")
             ctx.clearRect(0, 0, root.width, root.height)
             ctx.reset()
 
-            let minPoint = points[0], maxPoint = points[0];
-            points.forEach(function(v) {
+            let minPoint = values[0], maxPoint = values[0];
+            values.forEach(function(v) {
                 minPoint = Math.min(minPoint, v)
                 maxPoint = Math.max(maxPoint, v)
             })
 
-            let perPointHeight = (root.height - pointMinHeight) / (maxPoint - minPoint)
+            let perPointHeight = (root.height - minHeight) / (maxPoint - minPoint)
 
             // dashed line
             ctx.setLineDash([10, 3, 3, 3])
             ctx.strokeStyle = AppState.color?.text3
             ctx.lineWidth = 2
 
-            let getX = (i) => 30 + i * pointSpace
-            let getY = (i) => 45 + (root.height - pointMinHeight) - (points[i] - minPoint) * perPointHeight
+            let getX = (i) => 30 + i * perValueWidth
+            let getY = (i) => 45 + (root.height - minHeight) - (values[i] - minPoint) * perPointHeight
 
             ctx.beginPath()
             ctx.moveTo(getX(0), getY(0))
-            for (let i = 1; i < points.length; i++) {
+            for (let i = 1; i < values.length; i++) {
                 let x = getX(i), y = getY(i)
                 let px = getX(i - 1), py = getY(i - 1)
                 ctx.bezierCurveTo((px + x) / 2, py, (px + x) / 2, y, x, y)
@@ -70,7 +70,7 @@ Flickable {
             // dots
             ctx.setLineDash([])
             ctx.font = "16px sans-serif"
-            for (let j = 0; j < points.length; j++) {
+            for (let j = 0; j < values.length; j++) {
                 let x = getX(j), y = getY(j)
 
                 ctx.beginPath()
@@ -82,7 +82,7 @@ Flickable {
                 if (j == 0) {
                     ctx.strokeStyle = AppState.color?.text1
                     ctx.beginPath()
-                    ctx.arc(x, y, root.pointOuterCircleRadii, 0, 2 * Math.PI)
+                    ctx.arc(x, y, root.outerCircleRadii, 0, 2 * Math.PI)
                     ctx.stroke()
                 }
 
@@ -95,19 +95,19 @@ Flickable {
 
                 // draw point label and bottom label
                 ctx.fillStyle = AppState.color?.text1
-                ctx.fillText(points[j] + root.pointSuffix, x + 5, y - 10)
-                ctx.fillText(pointBottomLabels[j], x - 10, root.height - 10)
+                ctx.fillText(values[j] + root.valueSuffix, x + 5, y - 10)
+                ctx.fillText(bottomLabels[j], x - 10, root.height - 10)
 
                 // draw weather icons according to weather code
                 // skip first point
                 if (j != 0) {
                     // skip consecutive weather codes
-                    if (previousWeatherCode !== pointTopWeatherCodes[j]) {
-                        previousWeatherCode = pointTopWeatherCodes[j]
+                    if (previousWeatherCode !== topLabelWeatherCodes[j]) {
+                        previousWeatherCode = topLabelWeatherCodes[j]
 
                         // skip clearsky codes
-                        if (pointTopWeatherCodes[j] > 1) {
-                            AppState.tempWeatherCode = pointTopWeatherCodes[j] || 0
+                        if (topLabelWeatherCodes[j] > 1) {
+                            AppState.tempWeatherCode = topLabelWeatherCodes[j] || 0
                             ctx.drawImage("../" + AppState.tempWeatherIcon, x, y - 45, 24, 24)
                         }
                     }

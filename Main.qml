@@ -116,10 +116,10 @@ Window {
                 }
                 WeatherGraph {
                     // for weather graph
-                    points: weatherElement.weatherData["dailyForecastTemps"] || []
-                    pointSuffix: "°"
-                    pointBottomLabels: weatherElement.weatherData["dailyForecastHours"] || []
-                    pointTopWeatherCodes: weatherElement.weatherData["dailyForecastWeatherCodes"] || []
+                    values: weatherElement.weatherData["dailyForecastTemps"] || []
+                    valueSuffix: "°"
+                    bottomLabels: weatherElement.weatherData["dailyForecastHours"] || []
+                    topLabelWeatherCodes: weatherElement.weatherData["dailyForecastWeatherCodes"] || []
 
                     Layout.fillWidth: true
                     Layout.fillHeight: true
@@ -139,10 +139,10 @@ Window {
                 }
                 WeatherGraph {
                     // for weather graph
-                    points: weatherElement.weatherData["dailyForecastPrecipitationProbability"] || []
-                    pointSuffix: "%"
-                    pointBottomLabels: weatherElement.weatherData["dailyForecastHours"] || []
-                    pointTopWeatherCodes: weatherElement.weatherData["dailyForecastWeatherCodes"] || []
+                    values: weatherElement.weatherData["dailyForecastPrecipitationProbability"] || []
+                    valueSuffix: "%"
+                    bottomLabels: weatherElement.weatherData["dailyForecastHours"] || []
+                    topLabelWeatherCodes: weatherElement.weatherData["dailyForecastWeatherCodes"] || []
 
                     Layout.fillWidth: true
                     Layout.fillHeight: true
