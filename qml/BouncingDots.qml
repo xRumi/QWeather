@@ -15,8 +15,8 @@ Item {
             model: 3
             delegate: Rectangle {
                 width: size
-                height: width
-                radius: width / 2
+                height: size
+                radius: size / 2
                 antialiasing: true
                 color: AppState.color?.text1 || "red"
 
@@ -34,10 +34,6 @@ Item {
                         duration: 300
                         easing.type: Easing.InQuad
                     }
-                }
-
-                Component.onCompleted: {
-                    width = width
                 }
             }
         }

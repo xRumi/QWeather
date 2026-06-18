@@ -6,7 +6,6 @@ Flickable {
     property var values: [25, 26, 28, 27, 25, 23]
     property string valueSuffix: "°"
     property int perValueWidth: 60
-    property int minHeight: 100
     property var topLabelWeatherCodes: []
     property var bottomLabels: ["NOW", "2pm", "3pm", "4pm", "5pm", "6pm"]
     property int outerCircleRadii: 7
@@ -23,8 +22,7 @@ Flickable {
     onOuterCircleRadiiChanged: canvas.requestPaint()
 
     id: root
-    // contentHeight: canvas.height
-    contentWidth: canvas.width
+    contentWidth: canvas.width // required for making Canvas Flickable
     clip: true
 
     Canvas {
@@ -45,6 +43,8 @@ Flickable {
                 minPoint = Math.min(minPoint, v)
                 maxPoint = Math.max(maxPoint, v)
             })
+
+            const minHeight = 100
 
             let perPointHeight = (root.height - minHeight) / (maxPoint - minPoint)
 

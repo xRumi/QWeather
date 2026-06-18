@@ -103,7 +103,7 @@ Window {
             Layout.fillWidth: true
 
             ColumnLayout {
-                ForecastHourly {
+                CurrentTemps {
                     weatherData: weatherElement.weatherData
 
                     id: dailyWeatherArea
@@ -115,7 +115,7 @@ Window {
                     }
                 }
                 WeatherGraph {
-                    // for weather graph
+                    // for weather graph showing temperatures
                     values: weatherElement.weatherData["dailyForecastTemps"] || []
                     valueSuffix: "°"
                     bottomLabels: weatherElement.weatherData["dailyForecastHours"] || []
@@ -129,7 +129,7 @@ Window {
             }
 
             ColumnLayout {
-                ForecastDaily {
+                CurrentDetails {
                     backgroundItem: backgroundGradient
 
                     Layout.topMargin: 80
@@ -138,7 +138,7 @@ Window {
                     Layout.fillWidth: true
                 }
                 WeatherGraph {
-                    // for weather graph
+                    // for weather graph showing precipitation probabilities
                     values: weatherElement.weatherData["dailyForecastPrecipitationProbability"] || []
                     valueSuffix: "%"
                     bottomLabels: weatherElement.weatherData["dailyForecastHours"] || []
