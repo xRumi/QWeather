@@ -87,11 +87,21 @@ Window {
         }
 
         PageIndicator {
+            id: pageIndicator
             count: swipeView.count
             currentIndex: swipeView.currentIndex
             Layout.topMargin: 5
             Layout.alignment: Qt.AlignHCenter
             visible: weatherElement.isWeatherDataReady
+            delegate: Rectangle {
+                width: pageIndicator.currentIndex === index ? 10 : 6
+                height: width
+                radius: width / 2
+                color: AppState.color.text1
+                Behavior on width {
+                    NumberAnimation { duration: 100 }
+                }
+            }
         }
 
         SwipeView {
