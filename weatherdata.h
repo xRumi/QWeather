@@ -45,7 +45,7 @@ private:
     QVariantMap m_weatherLocation;
     QVariantMap m_weatherData;
 
-    bool m_isWeatherDataReady;
+    bool m_isWeatherDataReady = false;
 };
 
 #endif // WEATHERDATA_H

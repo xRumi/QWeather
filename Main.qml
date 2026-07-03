@@ -160,6 +160,19 @@ Window {
                     Layout.maximumHeight: 300
                 }
             }
+
+            ColumnLayout {
+                // for live updates from temperature and humidity sensor
+                Text {
+                    text: "Coming Soon!!"
+                    color: AppState.color.text1
+                    font {
+                        pixelSize: 18
+                    }
+
+                    Layout.alignment: Qt.AlignCenter
+                }
+            }
         }
     }
 }

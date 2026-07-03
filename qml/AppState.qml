@@ -4,7 +4,7 @@ pragma Singleton
 
 Item {
     id: root
-    property var weatherData
+    property var weatherData: ({})
     property int weatherCode: weatherData["weatherCode"] || 0
     property bool isNight: weatherData["isNight"] || false
     property var condition: weatherCodeDecode[weatherCode]?.condition || "Unknown"
