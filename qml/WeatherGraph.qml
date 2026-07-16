@@ -2,18 +2,19 @@ import QtQuick
 import QtQuick.Layouts
 
 Flickable {
-    // default experimental values
-    property var values: [25, 26, 28, 27, 25, 23]
-    property string valueSuffix: "°"
-    property int perValueWidth: 60
-    property var topLabelWeatherCodes: []
-    property var bottomLabels: ["NOW", "2pm", "3pm", "4pm", "5pm", "6pm"]
+    // default experimental valules
+    property var yS: [25, 26, 28, 27, 25, 23]
+    property var xS: ["NOW", "2pm", "3pm", "4pm", "5pm", "6pm"]
+    property var weatherCodes: []
+    property string ySuffix: "°"
+
     property int outerCircleRadii: 7
+    property int perXWidth: 60
+    property int minYsCount: 10
+    property int ySCount: Math.min(yS.length, Math.max(root.minYsCount, root.width / root.perXWidth))
+
+    // this animation causes like 0.5% cpu constantly
     property bool outerCircleAnimation: true
-
-    property int valueCount: Math.max(10, root.width / root.perValueWidth)
-
-    // this animation causes like 0.5% cpu constantly, use outerCircleAnimation to enable/disable
     NumberAnimation on outerCircleRadii {
         from: 0
         to: 7
@@ -31,17 +32,17 @@ Flickable {
         id: canvas
         antialiasing: true
         height: root.height
-        width: root.valueCount * perValueWidth + 20
+        width: root.ySCount * perXWidth + 20
 
         onPaint: function() {
-            if (!values?.length) return
+            if (!yS?.length) return
 
             const ctx = getContext("2d")
             ctx.clearRect(0, 0, root.width, root.height)
             ctx.reset()
 
-            let minPoint = values[0], maxPoint = values[0];
-            values.forEach(function(v) {
+            let minPoint = yS[0], maxPoint = yS[0];
+            yS.forEach(function(v) {
                 minPoint = Math.min(minPoint, v)
                 maxPoint = Math.max(maxPoint, v)
             })
@@ -54,12 +55,12 @@ Flickable {
             ctx.strokeStyle = AppState.color?.text3
             ctx.lineWidth = 2
 
-            let getX = (i) => 30 + i * perValueWidth
-            let getY = (i) => 45 + (root.height - minHeight) - (values[i] - minPoint) * perPointHeight
+            let getX = (i) => 30 + i * perXWidth
+            let getY = (i) => 45 + (root.height - minHeight) - (yS[i] - minPoint) * perPointHeight
 
             ctx.beginPath()
             ctx.moveTo(getX(0), getY(0))
-            for (let i = 1; i < root.valueCount; i++) {
+            for (let i = 1; i < root.ySCount; i++) {
                 let x = getX(i), y = getY(i)
                 let px = getX(i - 1), py = getY(i - 1)
                 ctx.bezierCurveTo((px + x) / 2, py, (px + x) / 2, y, x, y)
@@ -69,7 +70,7 @@ Flickable {
             // dots
             ctx.setLineDash([])
             ctx.font = "16px sans-serif"
-            for (let j = 0; j < root.valueCount; j++) {
+            for (let j = 0; j < root.ySCount; j++) {
                 let x = getX(j), y = getY(j)
 
                 ctx.beginPath()
@@ -94,13 +95,13 @@ Flickable {
 
                 // draw point label and bottom label
                 ctx.fillStyle = AppState.color?.text1
-                ctx.fillText(values[j] + root.valueSuffix, x + 5, y - 10)
-                ctx.fillText(bottomLabels[j], x - 10, root.height - 10)
+                ctx.fillText(yS[j] + root.ySuffix, x + 5, y - 10)
+                ctx.fillText(xS[j], x - 10, root.height - 10)
 
                 // draw weather icons according to weather code
                 // skip first point
                 if (j != 0) {
-                    AppState.tempWeatherCode = topLabelWeatherCodes[j] || 0
+                    AppState.tempWeatherCode = weatherCodes[j] || 0
                     ctx.drawImage("../" + AppState.tempWeatherIcon, x, y - 45, 24, 24)
                 }
             }

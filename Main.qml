@@ -126,10 +126,10 @@ Window {
                 }
                 WeatherGraph {
                     // for weather graph showing temperatures
-                    values: weatherElement.weatherData["dailyForecastTemps"] || []
-                    valueSuffix: "°"
-                    bottomLabels: weatherElement.weatherData["dailyForecastHours"] || []
-                    topLabelWeatherCodes: weatherElement.weatherData["dailyForecastWeatherCodes"] || []
+                    yS: weatherElement.weatherData["dailyForecastTemps"] || []
+                    xS: weatherElement.weatherData["dailyForecastHours"] || []
+                    ySuffix: "°"
+                    weatherCodes: weatherElement.weatherData["dailyForecastWeatherCodes"] || []
 
                     Layout.fillWidth: true
                     Layout.fillHeight: true
@@ -149,10 +149,10 @@ Window {
                 }
                 WeatherGraph {
                     // for weather graph showing precipitation probabilities
-                    values: weatherElement.weatherData["dailyForecastPrecipitationProbability"] || []
-                    valueSuffix: "%"
-                    bottomLabels: weatherElement.weatherData["dailyForecastHours"] || []
-                    topLabelWeatherCodes: weatherElement.weatherData["dailyForecastWeatherCodes"] || []
+                    yS: weatherElement.weatherData["dailyForecastPrecipitationProbability"] || []
+                    xS: weatherElement.weatherData["dailyForecastHours"] || []
+                    ySuffix: "%"
+                    weatherCodes: weatherElement.weatherData["dailyForecastWeatherCodes"] || []
 
                     Layout.fillWidth: true
                     Layout.fillHeight: true
