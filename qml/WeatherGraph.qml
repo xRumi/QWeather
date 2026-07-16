@@ -11,6 +11,8 @@ Flickable {
     property int outerCircleRadii: 7
     property bool outerCircleAnimation: true
 
+    property int valueCount: Math.max(10, root.width / root.perValueWidth)
+
     // this animation causes like 0.5% cpu constantly, use outerCircleAnimation to enable/disable
     NumberAnimation on outerCircleRadii {
         from: 0
@@ -29,7 +31,7 @@ Flickable {
         id: canvas
         antialiasing: true
         height: root.height
-        width: values.length * perValueWidth + 20
+        width: root.valueCount * perValueWidth + 20
 
         onPaint: function() {
             if (!values?.length) return
@@ -45,7 +47,6 @@ Flickable {
             })
 
             const minHeight = 100
-
             let perPointHeight = (root.height - minHeight) / (maxPoint - minPoint)
 
             // dashed line
@@ -58,7 +59,7 @@ Flickable {
 
             ctx.beginPath()
             ctx.moveTo(getX(0), getY(0))
-            for (let i = 1; i < values.length; i++) {
+            for (let i = 1; i < root.valueCount; i++) {
                 let x = getX(i), y = getY(i)
                 let px = getX(i - 1), py = getY(i - 1)
                 ctx.bezierCurveTo((px + x) / 2, py, (px + x) / 2, y, x, y)
@@ -68,7 +69,7 @@ Flickable {
             // dots
             ctx.setLineDash([])
             ctx.font = "16px sans-serif"
-            for (let j = 0; j < values.length; j++) {
+            for (let j = 0; j < root.valueCount; j++) {
                 let x = getX(j), y = getY(j)
 
                 ctx.beginPath()
