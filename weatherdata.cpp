@@ -107,7 +107,7 @@ void WeatherData::updateWeatherData() {
 
         m_weatherData["dewPoint"] = hourly["dew_point_2m"].toArray()[0].toDouble();
 
-        int dailyForecastHourLimit = 50;
+        int dailyForecastHourLimit = 10;
         double dailyForecastTempHigh = -1000, dailyForecastTempLow = 1000;
         QJsonArray dailyForecastHours{};
         QJsonArray dailyForecastTemps{};

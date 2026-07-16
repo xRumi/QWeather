@@ -29,7 +29,7 @@ Flickable {
         id: canvas
         antialiasing: true
         height: root.height
-        width: values.length * perValueWidth
+        width: values.length * perValueWidth + 20
 
         onPaint: function() {
             if (!values?.length) return
@@ -65,8 +65,6 @@ Flickable {
             }
             ctx.stroke()
 
-            let previousWeatherCode = 0
-
             // dots
             ctx.setLineDash([])
             ctx.font = "16px sans-serif"
@@ -101,16 +99,8 @@ Flickable {
                 // draw weather icons according to weather code
                 // skip first point
                 if (j != 0) {
-                    // skip consecutive weather codes
-                    if (previousWeatherCode !== topLabelWeatherCodes[j]) {
-                        previousWeatherCode = topLabelWeatherCodes[j]
-
-                        // skip clearsky codes
-                        if (topLabelWeatherCodes[j] > 1) {
-                            AppState.tempWeatherCode = topLabelWeatherCodes[j] || 0
-                            ctx.drawImage("../" + AppState.tempWeatherIcon, x, y - 45, 24, 24)
-                        }
-                    }
+                    AppState.tempWeatherCode = topLabelWeatherCodes[j] || 0
+                    ctx.drawImage("../" + AppState.tempWeatherIcon, x, y - 45, 24, 24)
                 }
             }
         }
