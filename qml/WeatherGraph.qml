@@ -7,22 +7,24 @@ Flickable {
     property var xS: ["NOW", "2pm", "3pm", "4pm", "5pm", "6pm"]
     property var weatherCodes: []
     property string ySuffix: "°"
-
-    property int outerCircleRadii: 7
     property int perXWidth: 60
     property int minYsCount: 10
+    property int outerCircleMaxRadii: 7
+
+    property int outerCircleRadii: 0
     property int ySCount: Math.min(yS.length, Math.max(root.minYsCount, root.width / root.perXWidth))
 
     // this animation causes like 0.5% cpu constantly
     property bool outerCircleAnimation: true
     NumberAnimation on outerCircleRadii {
         from: 0
-        to: 7
+        to: root.outerCircleMaxRadii
         duration: 1500
         loops: Animation.Infinite
         running: root.outerCircleAnimation
     }
     onOuterCircleRadiiChanged: canvas.requestPaint()
+    onYSChanged: canvas.requestPaint()
 
     id: root
     contentWidth: canvas.width // required for making Canvas Flickable
@@ -100,7 +102,7 @@ Flickable {
 
                 // draw weather icons according to weather code
                 // skip first point
-                if (j != 0) {
+                if (j != 0 && weatherCodes.length > 0) {
                     AppState.tempWeatherCode = weatherCodes[j] || 0
                     ctx.drawImage("../" + AppState.tempWeatherIcon, x, y - 45, 24, 24)
                 }

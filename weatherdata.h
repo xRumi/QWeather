@@ -6,8 +6,7 @@
 #include <QSettings>
 #include <QVariantMap>
 
-class WeatherData : public QQuickItem
-{
+class WeatherData : public QQuickItem {
     Q_OBJECT
     QML_ELEMENT
 
