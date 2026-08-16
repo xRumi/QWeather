@@ -49,7 +49,6 @@ void ReceiverThread::run() {
                     break;
                 }
             } while (serial.waitForReadyRead(20));
-            serial.clear();
             while (serial.waitForReadyRead(20)) {
                 serial.readAll();
                 qDebug() << "extra bytes somehow!!";

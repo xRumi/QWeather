@@ -17,7 +17,8 @@ SensorManager::SensorManager() {
         setIsError(true);
     });
     connect(&receiver, &ReceiverThread::request, this, [this](const QByteArray& res) {
-        uint8_t checksum = res[0] + res[1] + res[2] + res[3];
+        int8_t checksum = res[0] + res[1] + res[2] + res[3];
+
         if (checksum == res[4] && checksum != 0) {
             updateSensorData(res);
             setSensorStatus("Sensor connected");
@@ -26,6 +27,10 @@ SensorManager::SensorManager() {
             setSensorStatus("Invalid sensor data checksum");
             setIsError(true);
             qDebug() << "checksum error";
+
+            qDebug() << QString::number((uint8_t)res[0], 16) << QString::number((uint8_t)res[1], 16) << QString::number((uint8_t)res[2], 16) << QString::number((uint8_t)res[3], 16) << QString::number((uint8_t)res[4], 16);
+            qDebug() << "checksum = " << QString::number((uint8_t)checksum, 16);
+
         }
     });
 }
