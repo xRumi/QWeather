@@ -6,15 +6,14 @@ ColumnLayout {
     SensorManager {
         id: sensorManager
     }
-
     Timer {
-        interval: 1 * 1000
+        running: sensorManager.isError
         repeat: true
-        triggeredOnStart: true
-        running: true
+        triggeredOnStart: false
+        interval: 2000
 
         onTriggered: {
-            sensorManager.updateSensorData()
+            sensorManager.restart()
         }
     }
 
@@ -63,7 +62,7 @@ ColumnLayout {
         // weather graph showing sensor data visually
         yS: sensorManager.sensorData["humidities"] || []
         xS: sensorManager.sensorData["times"] || []
-        ySuffix: "°"
+        ySuffix: "%"
         weatherCodes: []
         perXWidth: 50
         minYsCount: xS.length
@@ -77,12 +76,9 @@ ColumnLayout {
     }
 
     Text {
-        text: sensorManager.isReady ? "Sensor Connected" : "Sensor Disconnected"
-        color: sensorManager.isReady ? "green" : "red"
-        font {
-            pixelSize: 16
-        }
-
-        Layout.alignment: Qt.AlignCenter
+        text: sensorManager.sensorStatus
+        color: sensorManager.isError ? "red" : AppState.color.text3
+        font.pixelSize: 14
+        Layout.alignment: Qt.AlignHCenter
     }
 }

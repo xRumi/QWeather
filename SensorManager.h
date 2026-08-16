@@ -1,39 +1,61 @@
 #ifndef SENSORMANAGER_H
 #define SENSORMANAGER_H
 
+#include "receiverthread.h"
 #include <QQuickItem>
 #include <QVariantMap>
+#include <QElapsedTimer>
+#include <QByteArray>
 
 class SensorManager : public QQuickItem {
     Q_OBJECT
     QML_ELEMENT
 
     Q_PROPERTY(QVariantMap sensorData READ sensorData NOTIFY sensorDataChanged)
-    Q_PROPERTY(bool isReady READ isReady WRITE setIsReady NOTIFY isReadyChanged)
+    Q_PROPERTY(QString sensorStatus READ sensorStatus WRITE setSensorStatus NOTIFY sensorStatusChanged)
+    Q_PROPERTY(bool isError READ isError WRITE setIsError NOTIFY isErrorChanged)
 
 public:
     SensorManager();
 
-    QVariantMap sensorData() const { return m_sensorData; };
-    bool isReady() const { return m_isReady; }
+    QVariantMap sensorData() const { return m_sensorData; }
+    bool isError() const { return m_isError; }
+    QString sensorStatus() const { return m_sensorStatus; }
+
+    void updateSensorData(const QByteArray& data);
 
 public slots:
-    void updateSensorData();
-    void setIsReady(bool ready) {
-        if (m_isReady != ready) {
-            m_isReady = ready;
-            emit isReadyChanged();
+    void restart() {
+        elapsedTimer.start();
+        receiver.startReceiver("/dev/ttyUSB0", 5, 2000);
+        setSensorStatus("Connecting..");
+        setIsError(true);
+        m_sensorData.clear();
+    }
+    void setIsError(bool ready) {
+        if (m_isError != ready) {
+            m_isError = ready;
+            emit isErrorChanged();
+        }
+    }
+    void setSensorStatus(const QString& status) {
+        if (m_sensorStatus != status) {
+            m_sensorStatus = status;
+            emit sensorStatusChanged();
         }
     }
 
 signals:
     void sensorDataChanged();
-    void isReadyChanged();
+    void sensorStatusChanged();
+    void isErrorChanged();
 
 private:
     QVariantMap m_sensorData;
-    bool m_isReady;
-
+    bool m_isError;
+    QString m_sensorStatus;
+    ReceiverThread receiver;
+    QElapsedTimer elapsedTimer;
 };
 
 #endif // SENSORMANAGER_H

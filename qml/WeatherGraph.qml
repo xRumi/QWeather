@@ -34,7 +34,7 @@ Flickable {
         id: canvas
         antialiasing: true
         height: root.height
-        width: root.ySCount * perXWidth + 20
+        width: root.ySCount * perXWidth + 30
 
         onPaint: function() {
             if (!yS?.length) return
@@ -48,6 +48,8 @@ Flickable {
                 minPoint = Math.min(minPoint, v)
                 maxPoint = Math.max(maxPoint, v)
             })
+
+            if (minPoint === maxPoint) minPoint++;
 
             const minHeight = 100
             let perPointHeight = (root.height - minHeight) / (maxPoint - minPoint)
@@ -97,7 +99,7 @@ Flickable {
 
                 // draw point label and bottom label
                 ctx.fillStyle = AppState.color?.text1
-                ctx.fillText(yS[j] + root.ySuffix, x + 5, y - 10)
+                ctx.fillText(parseFloat(yS[j].toFixed(1)) + root.ySuffix, x + 5, y - 10)
                 ctx.fillText(xS[j], x - 10, root.height - 10)
 
                 // draw weather icons according to weather code

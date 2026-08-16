@@ -1,17 +1,39 @@
 #include "SensorManager.h"
+#include "receiverthread.h"
 #include <QRandomGenerator>
 #include <QVariantMap>
 #include <QVariantList>
-#include <QString>
-
+#include <QElapsedTimer>
 
 SensorManager::SensorManager() {
-    setIsReady(true);
+    restart();
+
+    connect(&receiver, &ReceiverThread::error, this, [this](const QString& res) {
+        setSensorStatus(res);
+        setIsError(true);
+    });
+    connect(&receiver, &ReceiverThread::timeout, this, [this](const QString& res) {
+        setSensorStatus("Sensor disconnected");
+        setIsError(true);
+    });
+    connect(&receiver, &ReceiverThread::request, this, [this](const QByteArray& res) {
+        uint8_t checksum = res[0] + res[1] + res[2] + res[3];
+        if (checksum == res[4] && checksum != 0) {
+            updateSensorData(res);
+            setSensorStatus("Sensor connected");
+            setIsError(false);
+        } else {
+            setSensorStatus("Invalid sensor data checksum");
+            setIsError(true);
+            qDebug() << "checksum error";
+        }
+    });
 }
 
-void SensorManager::updateSensorData() {
-    QVariantList temps = m_sensorData["temps"].toList();
+void SensorManager::updateSensorData(const QByteArray& data) {
+
     QVariantList humidities = m_sensorData["humidities"].toList();
+    QVariantList temps = m_sensorData["temps"].toList();
     QVariantList times = m_sensorData["times"].toList();
 
     if (temps.count() > 50) {
@@ -19,17 +41,19 @@ void SensorManager::updateSensorData() {
         humidities.pop_front();
         times.pop_front();
     }
-    int previousTempsCount = temps.count();
 
-    static int sec = 0;
-    temps << QRandomGenerator::global()->bounded(30, 40);
-    humidities << QRandomGenerator::global()->bounded(80, 100);
-    times << QString::number(sec) + "s";
-    sec += 1;
+    float divider = std::pow(10, QString::number(data[1]).length());
+    humidities << data[0] + data[1] / divider;
 
-    m_sensorData["temps"] = temps;
+    divider = std::pow(10, QString::number(data[3]).length());
+    temps << data[2] + data[3] / divider;
+
+    int time = elapsedTimer.elapsed() / 1000;
+    times << QString::number(time) + "s";
+
     m_sensorData["humidities"] = humidities;
+    m_sensorData["temps"] = temps;
     m_sensorData["times"] = times;
 
-    if (previousTempsCount != temps.count()) emit sensorDataChanged();
+    emit sensorDataChanged();
 }

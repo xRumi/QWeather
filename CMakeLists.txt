@@ -4,7 +4,7 @@ project(QWeather VERSION 0.1 LANGUAGES CXX)
 
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-find_package(Qt6 REQUIRED COMPONENTS Quick)
+find_package(Qt6 REQUIRED COMPONENTS Quick SerialPort)
 
 qt_standard_project_setup(REQUIRES 6.10)
 
@@ -34,6 +34,7 @@ qt_add_qml_module(qWeather
         QML_FILES qml/Sensor.qml
         SOURCES SensorManager.h
         SOURCES SensorManager.cpp
+        SOURCES receiverthread.h receiverthread.cpp
 )
 # Qt for iOS sets MACOSX_BUNDLE_GUI_IDENTIFIER automatically since Qt 6.1.
 # If you are developing for iOS or macOS you should consider setting an
@@ -48,6 +49,7 @@ set_target_properties(qWeather PROPERTIES
 
 target_link_libraries(qWeather
     PRIVATE Qt6::Quick
+    PRIVATE Qt6::SerialPort
 )
 
 install(TARGETS qWeather

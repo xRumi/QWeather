@@ -1,6 +1,7 @@
 #include <QGuiApplication>
 #include <QQmlApplicationEngine>
 #include <iostream>
+#include "receiverthread.h"
 
 int main(int argc, char *argv[])
 {
