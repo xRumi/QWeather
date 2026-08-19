@@ -10,20 +10,21 @@ Yet Another beautifully simple, modern weather application with fluid animations
 1. Qt6 (Quick, SerialPort)
 2. C++, CMake
 
+## Arch Linux
+```
+sudo pacman -S qt6-base qt6-serialport cmake
+```
+## Sensor Cautions
+1. Serial is currently hardcodded to `/dev/ttyUSB0`, change it to relevant port in `SensorManager.h`
+2. Ensure permissions required for that port.
+
+
 # Building
 ```
 cmake -S . -B build
 cmake --build build
 ./build/qWeather
 ```
-## Arch Linux
-```
-sudo pacman -S qt6-base qt6-serialport cmake
-```
-
-## Sensor Cautions
-1. Serial is currently hardcodded to `/dev/ttyUSB0`, change it to relevant port in `SensorManager.h`
-2. Ensure permissions required for that port.
 
 # Demonstrations
 |<img src="./assets/demo/night-clearsky.webp" height="512">||
