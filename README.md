@@ -27,7 +27,7 @@ cmake --build build
 ```
 
 # Demonstrations
-|<img src="./assets/demo/night-clearsky.webp" height="512">||
+|<img src="./assets/demo/night-clearsky.webp" height="512">| [Demo Video](<./assets/demo/demovideo.mp4>) |
 |:-:|:-:|
 |<img src="./assets/demo/day-clearsky.png" height="512">| <img src="./assets/demo/day-clearsky-details.png" height="512"> |
-|<img src="./assets/demo/day-thunderstorm.png" height="512">|
+|<img src="./assets/demo/day-thunderstorm.png" height="512">| <img src="./assets/demo/sensor-section.png" height="512">
