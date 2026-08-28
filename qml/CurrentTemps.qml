@@ -1,6 +1,6 @@
 import QtQuick
 import QtQuick.Layouts
-import QtQuick.Controls
+import xRumi.QWeather
 
 ColumnLayout {
     property var weatherData
@@ -37,7 +37,7 @@ ColumnLayout {
         }
     }
     Row {
-        spacing: 50
+        spacing: 10
         Text {
             text: root.temperature.toFixed(1) + "°"
             color: AppState.color.text1
@@ -57,7 +57,7 @@ ColumnLayout {
             }
             Rectangle {
                 Layout.fillWidth: true
-                height: 1
+                implicitHeight: 1
                 color: AppState.color.text3
             }
 
@@ -72,7 +72,7 @@ ColumnLayout {
     }
     Text {
         Layout.topMargin: -20
-        text: "Feels like <b>" + apparentTemperature.toFixed(1) + "°</b> C"
+        text: "Feels like <b>" + root.apparentTemperature.toFixed(1) + "°</b> C"
         color: AppState.color.text3
         font {
             pixelSize: 18

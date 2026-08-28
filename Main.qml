@@ -1,7 +1,9 @@
+pragma ComponentBehavior: Bound
+
 import QtQuick
 import QtQuick.Layouts
 import QtQuick.Controls
-import QWeather
+import xRumi.QWeather
 
 Window {
     width: 430
@@ -82,7 +84,10 @@ Window {
             id: locationArea
             Layout.topMargin: weatherElement.isWeatherDataReady ? 0 : (parent.height - height) / 2
             Behavior on Layout.topMargin {
-                NumberAnimation { duration: 500 }
+                NumberAnimation {
+                    duration: Qt.platform.os === "android" ? 50 : 500
+                    easing.type: Easing.OutQuad
+                }
             }
         }
 
@@ -94,6 +99,8 @@ Window {
             Layout.alignment: Qt.AlignHCenter
             visible: weatherElement.isWeatherDataReady
             delegate: Rectangle {
+                required property int index
+
                 width: pageIndicator.currentIndex === index ? 10 : 6
                 height: width
                 radius: width / 2
@@ -119,11 +126,14 @@ Window {
                     id: dailyWeatherArea
                     opacity: weatherElement.isWeatherDataReady ? 1 : 0
                     Layout.topMargin: 80
+                    Layout.rightMargin: 5
+                    Layout.leftMargin: 5
 
                     Behavior on opacity {
-                        OpacityAnimator { duration: 1000 }
+                        OpacityAnimator { duration: 500 }
                     }
                 }
+
                 WeatherGraph {
                     // for weather graph showing temperatures
                     yS: weatherElement.weatherData["dailyForecastTemps"] || []

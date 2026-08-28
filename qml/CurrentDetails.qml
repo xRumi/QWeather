@@ -1,6 +1,6 @@
 import QtQuick
 import QtQuick.Layouts
-import QtQuick.Effects
+import xRumi.QWeather
 
 ColumnLayout {
     property var backgroundItem
@@ -21,7 +21,7 @@ ColumnLayout {
         id: card
         color: "transparent"
         border {
-            color: AppState.color.gradientBottom
+            color: AppState.color.gradientTop
             width: 1.5
         }
         radius: 5
@@ -37,11 +37,11 @@ ColumnLayout {
 
             Image {
                 Layout.alignment:  Qt.AlignCenter
-                source: "../" + iconName
+                source: "../" + card.iconName
                 sourceSize: Qt.size(40, 40)
             }
             Text {
-                text: middleText
+                text: card.middleText
                 color: AppState.color.text2
                 font {
                     pixelSize: 16
@@ -50,7 +50,7 @@ ColumnLayout {
                 Layout.fillWidth: true
             }
             Text {
-                text: "<b>" + bottomText + "</b>"
+                text: "<b>" + card.bottomText + "</b>"
                 color: AppState.color.text2
                 font {
                     pixelSize: 20

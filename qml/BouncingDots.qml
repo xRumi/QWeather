@@ -1,4 +1,7 @@
+pragma ComponentBehavior: Bound
+
 import QtQuick
+import xRumi.QWeather
 
 Item {
     property int size: 15
@@ -14,9 +17,12 @@ Item {
         Repeater {
             model: 3
             delegate: Rectangle {
-                width: size
-                height: size
-                radius: size / 2
+                required property int index
+
+                id: delegate
+                width: root.size
+                height: root.size
+                radius: root.size / 2
                 antialiasing: true
                 color: AppState.color?.text1 || "red"
 
@@ -25,8 +31,8 @@ Item {
                     running: true
 
                     NumberAnimation {
-                        to: -dotHeight
-                        duration: 400 + 50 * index
+                        to: -root.dotHeight
+                        duration: 400 + 50 * delegate.index
                         easing.type: Easing.OutQuad
                     }
                     NumberAnimation {

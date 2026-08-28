@@ -1,5 +1,5 @@
 import QtQuick
-import QtQuick.Layouts
+import xRumi.QWeather
 
 Flickable {
     // default experimental valules
@@ -15,7 +15,7 @@ Flickable {
     property int ySCount: Math.min(yS.length, Math.max(root.minYsCount, root.width / root.perXWidth))
 
     // this animation causes like 0.5% cpu constantly
-    property bool outerCircleAnimation: true
+    property bool outerCircleAnimation: Qt.platform.os === "android" ? false : true
     NumberAnimation on outerCircleRadii {
         from: 0
         to: root.outerCircleMaxRadii
@@ -34,17 +34,17 @@ Flickable {
         id: canvas
         antialiasing: true
         height: root.height
-        width: root.ySCount * perXWidth + 30
+        width: root.ySCount * root.perXWidth + 30
 
         onPaint: function() {
-            if (!yS?.length) return
+            if (!root.yS?.length) return
 
             const ctx = getContext("2d")
             ctx.clearRect(0, 0, root.width, root.height)
             ctx.reset()
 
-            let minPoint = yS[0], maxPoint = yS[0];
-            yS.forEach(function(v) {
+            let minPoint = root.yS[0], maxPoint = root.yS[0];
+            root.yS.forEach(function(v) {
                 minPoint = Math.min(minPoint, v)
                 maxPoint = Math.max(maxPoint, v)
             })
@@ -59,8 +59,8 @@ Flickable {
             ctx.strokeStyle = AppState.color?.text3
             ctx.lineWidth = 2
 
-            let getX = (i) => 30 + i * perXWidth
-            let getY = (i) => 45 + (root.height - minHeight) - (yS[i] - minPoint) * perPointHeight
+            let getX = (i) => 30 + i * root.perXWidth
+            let getY = (i) => 45 + (root.height - minHeight) - (root.yS[i] - minPoint) * perPointHeight
 
             ctx.beginPath()
             ctx.moveTo(getX(0), getY(0))
@@ -99,13 +99,13 @@ Flickable {
 
                 // draw point label and bottom label
                 ctx.fillStyle = AppState.color?.text1
-                ctx.fillText(parseFloat(yS[j].toFixed(1)) + root.ySuffix, x + 5, y - 10)
-                ctx.fillText(xS[j], x - 10, root.height - 10)
+                ctx.fillText(parseFloat(root.yS[j].toFixed(1)) + root.ySuffix, x + 5, y - 10)
+                ctx.fillText(root.xS[j], x - 10, root.height - 10)
 
                 // draw weather icons according to weather code
                 // skip first point
-                if (j != 0 && weatherCodes.length > 0) {
-                    AppState.tempWeatherCode = weatherCodes[j] || 0
+                if (j != 0 && root.weatherCodes.length > 0) {
+                    AppState.tempWeatherCode = root.weatherCodes[j] || 0
                     ctx.drawImage("../" + AppState.tempWeatherIcon, x, y - 45, 24, 24)
                 }
             }

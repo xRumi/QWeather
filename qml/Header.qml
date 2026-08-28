@@ -1,5 +1,6 @@
 import QtQuick
 import QtQuick.Layouts
+import xRumi.QWeather
 
 ColumnLayout {
     required property var weatherLocation

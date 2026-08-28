@@ -1,6 +1,6 @@
 import QtQuick
 import QtQuick.Layouts
-import QWeather
+import xRumi.QWeather
 
 ColumnLayout {
     SensorManager {

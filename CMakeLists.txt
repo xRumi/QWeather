@@ -4,13 +4,20 @@ project(QWeather VERSION 0.1 LANGUAGES CXX)
 
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-find_package(Qt6 REQUIRED COMPONENTS Quick SerialPort)
+find_package(Qt6 REQUIRED COMPONENTS Quick)
+
+if (NOT ANDROID)
+    find_package(Qt6 REQUIRED COMPONENTS SerialPort)
+endif()
 
 qt_standard_project_setup(REQUIRES 6.10)
 
-qt_add_executable(qWeather
+qt_add_executable(QWeather
     main.cpp
 )
+
+set_target_properties(QWeather PROPERTIES
+   QT_ANDROID_PACKAGE_SOURCE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/android")
 
 set(qml_singletons
     qml/AppState.qml
@@ -18,8 +25,8 @@ set(qml_singletons
 set_source_files_properties(${qml_singletons}
     PROPERTIES QT_QML_SINGLETON_TYPE TRUE)
 
-qt_add_qml_module(qWeather
-    URI QWeather
+qt_add_qml_module(QWeather
+    URI xRumi.QWeather
     QML_FILES
         Main.qml
         SOURCES weatherdata.h weatherdata.cpp
@@ -39,7 +46,7 @@ qt_add_qml_module(qWeather
 # Qt for iOS sets MACOSX_BUNDLE_GUI_IDENTIFIER automatically since Qt 6.1.
 # If you are developing for iOS or macOS you should consider setting an
 # explicit, fixed bundle identifier manually though.
-set_target_properties(qWeather PROPERTIES
+set_target_properties(QWeather PROPERTIES
 #    MACOSX_BUNDLE_GUI_IDENTIFIER com.example.qWeather
     MACOSX_BUNDLE_BUNDLE_VERSION ${PROJECT_VERSION}
     MACOSX_BUNDLE_SHORT_VERSION_STRING ${PROJECT_VERSION_MAJOR}.${PROJECT_VERSION_MINOR}
@@ -47,13 +54,29 @@ set_target_properties(qWeather PROPERTIES
     WIN32_EXECUTABLE TRUE
 )
 
-target_link_libraries(qWeather
+target_link_libraries(QWeather
     PRIVATE Qt6::Quick
-    PRIVATE Qt6::SerialPort
 )
 
-install(TARGETS qWeather
+if (NOT ANDROID)
+    target_link_libraries(QWeather PRIVATE Qt6::SerialPort)
+endif()
+
+if (ANDROID)
+    include(${ANDROID_SDK_ROOT}/android_openssl/android_openssl.cmake)
+    add_android_openssl_libraries(QWeather)
+endif()
+
+install(TARGETS QWeather
     BUNDLE DESTINATION .
     LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
     RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
+)
+
+file(GLOB_RECURSE InstallerFiles "installer/*")
+add_custom_target(CreateInstaller
+    COMMAND ls
+    SOURCES ${InstallerFiles}
+    COMMENT "Doing something custom"
+    DEPENDS qWeather
 )
