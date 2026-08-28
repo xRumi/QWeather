@@ -17,7 +17,6 @@ public:
     ~ReceiverThread() {};
 
     void startReceiver(const QString& portName, int dataSize, int waitTimeout) {
-        qDebug() << "startReceiver() called";
         m_mutex.lock();
         m_portName = portName;
         m_dataSize = dataSize;

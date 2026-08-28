@@ -3,12 +3,14 @@
 #include <QThread>
 #include <QMutex>
 #include <QByteArray>
-#include <QSerialPort>
 #include <QDebug>
 
-void ReceiverThread::run() {
-    qDebug() << "run() called";
+#ifndef Q_OS_ANDROID
+#include <QSerialPort>
+#endif
 
+void ReceiverThread::run() {
+#ifndef Q_OS_ANDROID
     QSerialPort serial;
 
     while (1) {
@@ -55,4 +57,5 @@ void ReceiverThread::run() {
             }
         } else emit timeout("Receiver Timeout, retrying");
     }
+#endif
 }

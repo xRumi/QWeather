@@ -26,11 +26,16 @@ public:
 
 public slots:
     void restart() {
+        #ifdef Q_OS_ANDROID
+        setSensorStatus("Sensor Reading Disabled for Android");
+        setIsError(true);
+        #else
         elapsedTimer.start();
         receiver.startReceiver("/dev/ttyUSB0", 5, 2000);
         setSensorStatus("Connecting..");
         setIsError(true);
         m_sensorData.clear();
+        #endif
     }
     void setIsError(bool ready) {
         if (m_isError != ready) {
